@@ -1,0 +1,46 @@
+name: deploy
+
+on:
+  workflow_call:
+    secrets:
+      PLANTON_CLOUD_SERVICE_CLIENT_ID:
+        required: true
+      PLANTON_CLOUD_SERVICE_CLIENT_SECRET:
+        required: true
+    inputs:
+      PLANTON_CLOUD_SERVICE_CLI_ENV:
+        required: true
+        type: string
+      PLANTON_CLOUD_PRODUCT_ENV_ID:
+        required: true
+        type: string
+      PLANTON_CLOUD_MICROSERVICE_ID:
+        required: true
+        type: string
+      MICROSERVICE_DEPLOYMENT_VERSION:
+        required: true
+        type: string
+      CONTAINER_IMAGE_NAME:
+        required: true
+        type: string
+      CONTAINER_IMAGE_VERSION:
+        required: true
+        type: string
+
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment: ${{ inputs.PLANTON_CLOUD_PRODUCT_ENV_ID }}-${{ inputs.MICROSERVICE_DEPLOYMENT_VERSION }}
+    steps:
+      - uses: actions/checkout@v3
+      - uses: plantoncloud/gh-action-deploy-microservice@main
+        with:
+          planton_cloud_service_cli_env: ${{ inputs.PLANTON_CLOUD_SERVICE_CLI_ENV }}
+          planton_cloud_service_client_id: ${{ secrets.PLANTON_CLOUD_SERVICE_CLIENT_ID }}
+          planton_cloud_service_client_secret: ${{ secrets.PLANTON_CLOUD_SERVICE_CLIENT_SECRET }}
+          planton_cloud_product_env_id: ${{ inputs.PLANTON_CLOUD_PRODUCT_ENV_ID }}
+          planton_cloud_microservice_id: ${{ inputs.PLANTON_CLOUD_MICROSERVICE_ID }}
+          microservice_deployment_version: ${{ inputs.MICROSERVICE_DEPLOYMENT_VERSION }}
+          container_image_name: ${{ inputs.CONTAINER_IMAGE_NAME }}
+          container_image_version: ${{ inputs.CONTAINER_IMAGE_VERSION }}
