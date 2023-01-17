@@ -32,6 +32,7 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     environment: ${{ inputs.PLANTON_CLOUD_PRODUCT_ENV_ID }}-${{ inputs.MICROSERVICE_DEPLOYMENT_VERSION }}
+    
     steps:
       - uses: actions/checkout@v3
       - uses: plantoncloud/gh-action-deploy-microservice@main
